@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "Chrome App Test Frame",
+  "version": "1.0",
+  "icons": {
+    "19":"img/icon-64px.png",
+    "38":"img/icon-64px.png",
+    "64":"img/icon-64px.png",
+    "128":"img/icon-64px.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19":"img/icon-64px.png",
+      "38":"img/icon-64px.png"
+    }
+  },
+  "permissions": [ "storage", "activeTab", "tabs", "<all_urls>" ],
+  "options_page": "html/options.html",
+  "background": {
+    "page": "html/background.html",
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*","https://*/*"],
+      "js": [ "js/core-min.js", "js/sha1-min.js", "js/content.js" ]
+    }
+  ]
+}

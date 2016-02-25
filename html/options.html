@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Chrome App Test options</title>
+  <style media="screen">
+    html * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      margin: 0 5%
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      margin: 5px 0;
+    }
+
+    .column {
+      margin: 0 2px;
+    }
+
+    .column.column-10 {
+      display: flex;
+      flex-direction: row;
+      flex: 10;
+    }
+
+    .column.column-2 {
+      display: flex;
+      flex-direction: row;
+      flex: 2;
+    }
+
+    .flex {
+      flex: 1;
+    }
+
+    .flex-2 {
+      padding: 0 5px 0 0;
+      text-align: right;
+      flex: 2;
+    }
+
+    .flex-10 {
+      flex: 10;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <h4>Chrome App Test Frame options</h4>
+    </div>
+    <div class="row">
+      <div class="column column-10">
+        <label for="urlInput" class="flex-2">Enter an url</label>
+        <input id="urlInput" class="flex-10" type="url"></input>
+      </div>
+      <div class="column column-2">
+        <button type="button" id="saveBtn" class="flex">Save</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column column-10">
+        <label class="flex-2">Current url value</label>
+        <span id="urlEcho" class="flex-10"></span>
+      </div>
+      <div class="column column-2"></div>
+    </div>
+  </div>
+  <script src="../js/options.js"></script>
+</body>
+
+</html>
