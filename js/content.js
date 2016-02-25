@@ -10,7 +10,9 @@
   };
 
   var storage = chrome.storage.local;
-  var urlFrame = false;
+  var opened = false;
+  var embedScript = false;
+  var sidePanelDiv = false;
 
   var port = chrome.runtime.connect(EXTENSION_ID, connectionInfo);
 
@@ -28,8 +30,8 @@
     // debugger;
     console.log('Message received ' + JSON.stringify(message));
 
-    if (urlFrame) {
-      closeSidePanel(urlFrame);
+    if (opened) {
+      closeSidePanel();
     } else {
       openSidePanel();
     }
@@ -42,20 +44,27 @@
   function openSidePanel() {
     storage.get('frameUrl', function(data) {
       if (data && data.frameUrl) {
-        urlFrame = document.createElement('iframe');
-        // urlFrame.setAttribute("id", 'catFrame_sidebar');
-        urlFrame.setAttribute("src", data.frameUrl);
-        urlFrame.setAttribute("style", "z-index: 999999999999999; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 300px; height: 100%; border:0; border-left: 1px solid #eee; box-shadow: 0px -1px 7px 0px #aaa; overflow-x: hidden;");
-        urlFrame.setAttribute("allowtransparency", "false");
-        urlFrame.setAttribute("scrolling", "no");
-        document.documentElement.appendChild(urlFrame);
+        embedScript = document.createElement(script);
+        embedScript.setAttribute('async', true);
+        document.body.appendChild(embedScript);
+
+        sidePanelDiv = document.createElement('div');
+        sidePanelDiv.classList.add('at-app-embed');
+        sidePanelDiv.setAttribute('app', 'at-now/start-now');
+        document.body.appendChild(sidePanelDiv);
+
+        var src = data.frameUrl + '/components/at-app-embed/at-app-embed.js';
+        embedScript.setAttribute('src', src);
+
+        opened = true;
       }
     });
   }
 
   function closeSidePanel() {
-    document.documentElement.removeChild(urlFrame);
-    urlFrame = false;
+    document.body.removeChild(embedScript);
+    document.body.removeChild(sidePanelDiv);
+    opened = false;
   }
 
 
