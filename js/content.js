@@ -44,7 +44,7 @@
   function openSidePanel() {
     storage.get('frameUrl', function(data) {
       if (data && data.frameUrl) {
-        embedScript = document.createElement(script);
+        embedScript = document.createElement('script');
         embedScript.setAttribute('async', true);
         document.body.appendChild(embedScript);
 
