@@ -20,6 +20,12 @@
  */
 (function() {
   'use strict';
+
+  if (window.ChromeAppTestFrameClientScriptLoaded !== undefined) {
+    return;
+  }
+  window.ChromeAppTestFrameClientScriptLoaded = true;
+
   // a unique identifier is needed to identify the tab/page this content.js is loaded into
   // href is a good choice
   // to emphasize uniqueness a SHA1 hash is calculated from href
@@ -49,6 +55,8 @@
   function onDisconnected(port) {
     // for now just log the event
     console.log('Port' + port.name + ' disconnected');
+    // when tab is closed or when extension is disabled if sidebar is opened it should be closed
+    closeSidePanel();
   }
 
   function onMessageReceived(message, sender, sendResponseCallback) {

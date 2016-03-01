@@ -84,6 +84,24 @@
           port.postMessage({
             signal: "ToggleSidePanel"
           });
+        } else {
+          // the content script is not loaded for the current tab
+          // so we inject the content script on the page
+          // we also "pipe" the script loading so we know when we finished loading the scripts
+          chrome.tabs.executeScript(null, {file: "js/core-min.js"}, function(args1){
+            chrome.tabs.executeScript(null, {file: "js/sha1-min.js"}, function(args2){
+              chrome.tabs.executeScript(null, {file: "js/content.js"}, function (args3) {
+                // when all scripts finish loading send the message to open the side panel
+                if (portMapping[hashStr] !== undefined) {
+                  port = portMapping[hashStr];
+                  // send the message to the content script to toggle the side panel
+                  port.postMessage({
+                    signal: "ToggleSidePanel"
+                  });
+                }
+              });
+            });
+          });
         }
       }
     };
