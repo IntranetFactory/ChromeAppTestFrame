@@ -25,6 +25,7 @@
     return;
   }
   window.ChromeAppTestFrameClientScriptLoaded = true;
+  console.log("Extension.Content-JS: Loading Content-JS...");
 
   // a unique identifier is needed to identify the tab/page this content.js is loaded into
   // href is a good choice
@@ -32,6 +33,8 @@
   var href = window.location.href;
   var hash = CryptoJS.SHA1(href);
   var hashStr = hash.toString();
+
+  console.log("Extension.Content-JS: Content-JS is on url " + href + " and url hash is " + hashStr);
 
   // each extension has a unique id; this string is copy/pasted from settings -> extensions page
   var EXTENSION_ID = 'ghmdepaiobfijajcpfifgmcjpimmiocf';
@@ -45,31 +48,45 @@
   // we initialize urlFrame to false; this is a convinient initial state for toggling iFrame functionality
   var urlFrame = false;
 
+  console.log("Extension.Content-JS: Connecting to extension ...");
   // establish the connection with the extension; this connects to the background page (.js) which is what we want
   var port = chrome.runtime.connect(EXTENSION_ID, connectionInfo);
+  console.log("Extension.Content-JS: Connecting to extension ... DONE.");
   // listen to onDisconnect event
   port.onDisconnect.addListener(onDisconnected);
   // listen to onMessage event
   port.onMessage.addListener(onMessageReceived);
+  console.log("Extension.Content-JS: Attached to onDisconnect and onMessage.");
 
   function onDisconnected(port) {
     // for now just log the event
-    console.log('Port' + port.name + ' disconnected');
+    console.log("Extension.Content-JS: Port " + port.name + " disconnected.");
     // when tab is closed or when extension is disabled if sidebar is opened it should be closed
-    closeSidePanel();
+    if (urlFrame) {
+      console.log("Extension.Content-JS: Url frame opened. Closing ...");
+      // if urlFrame is not false close side panel
+      closeSidePanel();
+      // set urlFrame to false
+      urlFrame = false;
+      console.log("Extension.Content-JS: Url frame closed ...");
+    }
   }
 
   function onMessageReceived(message, sender, sendResponseCallback) {
     // for now log the event
-    console.log('Message received ' + JSON.stringify(message));
+    console.log("Extension.Content-JS: Message received " + JSON.stringify(message) + " from " + JSON.stringify(sender));
     if (urlFrame) {
+      console.log("Extension.Content-JS: Url frame opened. Closing ...");
       // if urlFrame is not false close side panel
       closeSidePanel(urlFrame);
       // set urlFrame to false
       urlFrame = false;
+      console.log("Extension.Content-JS: Url frame closed ...");
     } else {
+      console.log("Extension.Content-JS: Url frame closed. Opening ...");
       // if urlFrame is false open side panel
       openSidePanel();
+      console.log("Extension.Content-JS: Url frame open.");
     }
   }
 
@@ -95,9 +112,8 @@
 
   function closeSidePanel() {
     // to close side panel we remove the urlFrame from the DOM
-    if (urlFrame) {
-      document.documentElement.removeChild(urlFrame);
-    }
+    document.documentElement.removeChild(urlFrame);
   }
 
+  console.log("Extension.Content-JS: Content-JS loaded...");
 }());
