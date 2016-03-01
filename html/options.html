@@ -19,6 +19,10 @@
       margin: 5px 0;
     }
 
+    .row.extra-margins {
+      margin-bottom: 13px;
+    }
+
     .column {
       margin: 0 2px;
     }
@@ -48,18 +52,50 @@
     .flex-10 {
       flex: 10;
     }
+
+    #version {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .value {
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .input {
+      padding: 3px 5px;
+      font-size: 14px;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <div class="row">
-      <h4>Chrome App Test Frame options</h4>
+      <h4 class="title">Chrome App Test Frame options</h4>
+    </div>
+    <div class="row extra-margins">
+      <div class="column column-10">
+        <label class="label flex-2">Current version</label>
+        <span id="version" class="value flex-10">1.0.0.0</span>
+      </div>
+      <div class="column column-2"></div>
     </div>
     <div class="row">
       <div class="column column-10">
-        <label for="urlInput" class="flex-2">Enter an url</label>
-        <input id="urlInput" class="flex-10" type="url"></input>
+        <label for="urlInput" class="label flex-2">Enter an url</label>
+        <input id="urlInput" class="input flex-10" type="url"></input>
       </div>
       <div class="column column-2">
         <button type="button" id="saveBtn" class="flex">Save</button>
@@ -67,12 +103,13 @@
     </div>
     <div class="row">
       <div class="column column-10">
-        <label class="flex-2">Current url value</label>
-        <span id="urlEcho" class="flex-10"></span>
+        <label class="label flex-2">Current url value</label>
+        <span id="urlEcho" class="value flex-10"></span>
       </div>
       <div class="column column-2"></div>
     </div>
   </div>
+</div>
   <script src="../js/options.js"></script>
 </body>
 
